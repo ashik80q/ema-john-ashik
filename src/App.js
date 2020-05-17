@@ -1,24 +1,62 @@
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
 
-function App() {
+import './App.css';
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Link
+} from "react-router-dom";
+import Header from './Component/Header/Header';
+import Shop from './Component/Header/Shop/Shop';
+import Review from './Component/Header/Review/Review';
+import Inventory from './Component/Header/Inventory/Inventory';
+import Notfount from './Notfount/Notfount';
+import ProductDetail from './ProdcutDetail/ProductDetail';
+import LogIn from './Component/LogIn/LogIn';
+import { createContext } from 'react';
+import { AuthContextProvider, PrivateRoute } from './Component/LogIn/useAuth';
+import Shipment from './Component/Shipment/Shipment';
+
+
+
+
+function App(props) {
+  
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+     
+     <AuthContextProvider>
+        <Header></Header>
+            <Router>
+             <Switch>
+              <Route path="/shop">
+                <Shop></Shop>
+                </Route>
+                <Route path="/review">
+                <Review></Review>
+                </Route>
+                <Route path="/inventory">
+                <Inventory></Inventory>
+                </Route>
+                <Route exact path="/">
+                <Shop></Shop>
+                </Route>
+                <Route path="/product/:productKey">
+                <ProductDetail></ProductDetail>
+                </Route>
+                <Route path="/login">
+                  <LogIn></LogIn>
+                </Route>
+                <PrivateRoute path="/shipment">
+                  <Shipment></Shipment>
+                </PrivateRoute>
+                <Route  path="*">
+                <Notfount></Notfount>
+              </Route>
+            </Switch>
+          </Router>
+        </AuthContextProvider>
     </div>
   );
 }
