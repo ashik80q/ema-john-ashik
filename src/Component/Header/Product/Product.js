@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import './Product.css';
 import { Link } from 'react-router-dom';
 const Product = (props) => {

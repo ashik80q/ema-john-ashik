@@ -1,11 +1,9 @@
 import React from 'react';
-
 import './App.css';
 import {
   BrowserRouter as Router,
   Switch,
-  Route,
-  Link
+  Route
 } from "react-router-dom";
 import Header from './Component/Header/Header';
 import Shop from './Component/Header/Shop/Shop';
@@ -14,7 +12,6 @@ import Inventory from './Component/Header/Inventory/Inventory';
 import Notfount from './Notfount/Notfount';
 import ProductDetail from './ProdcutDetail/ProductDetail';
 import LogIn from './Component/LogIn/LogIn';
-import { createContext } from 'react';
 import { AuthContextProvider, PrivateRoute } from './Component/LogIn/useAuth';
 import Shipment from './Component/Shipment/Shipment';
 

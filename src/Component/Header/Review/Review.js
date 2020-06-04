@@ -1,24 +1,21 @@
 import React, { useState, useEffect } from 'react';
-import { getDatabaseCart, removeFromDatabaseCart, processOrder } from '../../../utilities/databaseManager';
-import fakeData from '../../../fakeData';
+import { getDatabaseCart, removeFromDatabaseCart } from '../../../utilities/databaseManager';
 import ReviewItem from '../../ReviewItem/ReviewItem';
-import Shop from '../Shop/Shop';
 import Cart from '../Cart/Cart';
-import happyImg from '../../../images/giphy.gif';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../../LogIn/useAuth';
 
 const Review = () => {
     const [cart, setCart] = useState([]);
-    const [orderPlace, setOrderPlace] = useState(false);
+
     const auth = useAuth();
     
-    const handelOrderPlace = ()=>{
+    // const handelOrderPlace = ()=>{
          
-        setCart([]);
-        setOrderPlace(true);
-         processOrder();
-     }
+    //     setCart([]);
+    //     setOrderPlace(true);
+    //      processOrder();
+    //  }
   
         const removeItem = (productKeys) =>{
             const newCart = cart.filter(pd => pd.key !== productKeys)
@@ -31,31 +28,43 @@ const Review = () => {
     useEffect(()=>{
         const saveCart = getDatabaseCart();
         const productKeys = Object.keys(saveCart);
-        const cartProduct = productKeys.map(key => {
-            const product = fakeData.find(pd => pd.key === key);
-           product.quantity = saveCart[key];
-            return product;
-        });
-        setCart(cartProduct);
-       
+        // console.log(productKeys);
         
+        fetch('http://localhost:4200/getProductsByKey', {
+            method: 'POST', 
+            headers: {
+              'Content-Type': 'application/json'
+          
+            },
+            
+            body: JSON.stringify(productKeys) // body data type must match "Content-Type" header
+          
+
+        })
+        .then(res => res.json())
+        .then(data => {
+            const cartProduct = productKeys.map(key => {
+                const product = data.find(pd => pd.key === key);
+               product.quantity = saveCart[key];
+                return product;
+            });
+            setCart(cartProduct);
+        }); 
     },[]);
-    let thank;
-    if(orderPlace){
-        thank = <img src={happyImg} alt=""/>
-    }
+   
     return (
         <div className="mine-container">
             
            <div className='product-container'>
            {
                 cart.map(pd => <ReviewItem 
+                    key = {pd.key}
                     removeItem = {removeItem}
                     product={pd}
                     
                     ></ReviewItem>)
             }
-            {thank}
+           
             {
                 !cart.length && <h1>You car is empty. <a href="/shop">Keep shopping</a></h1>
             }

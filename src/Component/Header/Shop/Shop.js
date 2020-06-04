@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import fakeData from '../../../fakeData';
 import './Shop.css';
 import Product from '../Product/Product';
 import Cart from '../Cart/Cart';
@@ -7,21 +6,33 @@ import { addToDatabaseCart, getDatabaseCart } from '../../../utilities/databaseM
 import { Link } from 'react-router-dom';
 
 const Shop =  (props) => {
-    console.log(props);
+    // console.log(props);
     
-    const fakeData10 = fakeData.slice(0,10);
-    const [product, setProducts] = useState(fakeData10);
+    const [products, setProducts] = useState([]);
     const [cart, setCart] = useState([]);
+    useEffect(()=>{
+     fetch("http://localhost:4200/products")
+     .then(res => res.json())
+     .then(data => {
+   
+         setProducts(data);
+         
+     })
+    },[])
+
     useEffect(()=>{
         const saveCart = getDatabaseCart();
         const productKeys = Object.keys(saveCart);
+       if(products.length > 0){
         const cartProduct = productKeys.map(key => {
-            const product = fakeData.find(pd => pd.key === key);
-            product.quantity = saveCart[key];
+            const product = products.find(pd => pd.key === key);
+           product.quantity = saveCart[key];
             return product;
-        });
+        })
         setCart(cartProduct);
-    },[])
+       }
+      
+    },[products])
     const handlerAddProduct = (product) =>{
         const toBeAddedKey = product.key;
         const sameProduct = cart.find(pd => pd.key === toBeAddedKey);
@@ -45,7 +56,7 @@ const Shop =  (props) => {
     return (
         <div className="mine-container">
             <div className='product-container'>
-             {product.map(pd =>  <Product 
+             {products.map(pd =>  <Product 
              key = {pd.key}
              product={pd}
              handlerAddProduct = {handlerAddProduct}
