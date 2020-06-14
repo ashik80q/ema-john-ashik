@@ -30,7 +30,7 @@ const Review = () => {
         const productKeys = Object.keys(saveCart);
         // console.log(productKeys);
         
-        fetch('http://localhost:4200/getProductsByKey', {
+        fetch('https://secret-scrubland-75972.herokuapp.com/getProductsByKey', {
             method: 'POST', 
             headers: {
               'Content-Type': 'application/json'

@@ -11,9 +11,11 @@ const ProductDetail = () => {
 useEffect(()=>{
  
     
-   fetch('http://localhost:4200/product/'+productKey)
+   fetch('https://secret-scrubland-75972.herokuapp.com/product/'+ productKey)
    .then(res => res.json())
    .then(data =>{
+       console.log(data);
+       
        setProduct(data);
    })
 

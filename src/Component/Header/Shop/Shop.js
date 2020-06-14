@@ -11,7 +11,7 @@ const Shop =  (props) => {
     const [products, setProducts] = useState([]);
     const [cart, setCart] = useState([]);
     useEffect(()=>{
-     fetch("http://localhost:4200/products")
+     fetch("https://secret-scrubland-75972.herokuapp.com/products")
      .then(res => res.json())
      .then(data => {
    
